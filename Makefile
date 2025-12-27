@@ -16,6 +16,9 @@ CXXFLAGS     += -I$(THIRD_PARTY)/softfloat/source/include
 CXXFLAGS     += -I$(THIRD_PARTY)/ramulator/src
 CXXFLAGS     += -DXLEN_32 -DNUM_CORES=2 -DNUM_WARPS=4 -DNUM_THREADS=4
 
+# In your Makefile CXXFLAGS to ou will see the instruction trace in the QuestaSim console
+CXXFLAGS += -DDEBUG_LEVEL=3
+
 # Linker flags from the original SimX Makefile
 LDFLAGS       = $(THIRD_PARTY)/softfloat/build/Linux-x86_64-GCC/softfloat.a
 LDFLAGS      += -L$(THIRD_PARTY)/ramulator -lramulator
@@ -37,4 +40,5 @@ run: $(DPI_LIB)
 	vsim -c test_top -sv_lib $(DPI_LIB) -do "run -all; quit"
 
 clean:
+
 	rm -rf work vsim.wlf $(DPI_LIB) transcript
