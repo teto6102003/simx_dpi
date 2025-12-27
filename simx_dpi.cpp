@@ -90,6 +90,16 @@ int simx_step(int cycles = 0) {
     }
 }
 
+// Add this to your simx_dpi.cpp inside the extern "C" block
+void simx_write_mem(longint addr, int size, const svOpenArrayHandle data_handle) {
+    uint8_t* sv_ptr = (uint8_t*)svGetArrayPtr(data_handle);
+    if (g_ram && sv_ptr) {
+        // Direct write into SimX RAM
+        g_ram->write(sv_ptr, addr, size);
+        std::printf("[DPI] Written %d bytes to SimX at 0x%llx\n", size, addr);
+    }
+}
+
 // 3. Read Memory (Universal)
 void simx_read_memory(long long addr, int size, const svOpenArrayHandle data_handle) {
     uint8_t* sv_ptr = (uint8_t*)svGetArrayPtr(data_handle);
@@ -105,3 +115,4 @@ void simx_cleanup() {
 }
 
 }
+
